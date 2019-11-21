@@ -20,9 +20,9 @@ test:
 test-cov:
 	py.test --cov ./tests --cov-report term-missing --cov-report xml:reports/coverage.xml --cov-report html:reports/coverage tests
 
-# test-loop:
-# 	py.test tests
-# 	ptw --ext=.py,.pyx --ignore=doc tests
+test-loop:
+	py.test tests
+	ptw --ext=.py,.pyx --ignore=doc tests
 
 flake8:
 	py.test --flake8
