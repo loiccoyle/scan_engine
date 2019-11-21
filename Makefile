@@ -46,4 +46,4 @@ yapf:
 	yapf -i -r $(PKGNAME)
 	yapf -i setup.py
 
-.PHONY: all clean install install-dev test  test-nocov flake8 pep8 dependencies docstyle
+.PHONY: all clean install install-dev test  test-nocov flake8 pep8 dependencies docstyle notebooks
