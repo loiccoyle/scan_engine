@@ -26,10 +26,11 @@ setup(
     include_package_data=True,
     platforms='any',
     setup_requires=['setuptools_scm'],
-    use_scm_version={
-        'write_to': 'scan_engine/version.txt',
-        'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
-    },
+    use_scm_version=True,
+    # use_scm_version={
+    #     'write_to': 'scan_engine/version.txt',
+    #     'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
+    # },
     install_requires=requirements,
     python_requires='>=3.6',
     classifiers=[
