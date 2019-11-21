@@ -1,3 +1,5 @@
+"""engine.py unit tests.
+"""
 import unittest
 from itertools import product
 from scan_engine import Productable as P
@@ -9,7 +11,11 @@ from scan_engine.engine import grouper
 
 
 class TestEngineZipable(unittest.TestCase):
-    def test_engine_Zipable_Zipable(self):
+    """Test behaviour of the engine with Zipables.
+    """
+    def test_engine_zipable_zipable(self):
+        """Tests the behaviour of the engine on non nested Zipables.
+        """
         var1 = Z(1, 2, 3)
         var2 = Z(4, 5, 6)
         var3 = Z(7, 8, 9)
@@ -17,14 +23,18 @@ class TestEngineZipable(unittest.TestCase):
         self.assertEqual(list(engine(var1, var2, var3, var4)),
                          list(grouper(flatten(var1 + var2 + var3 + var4), 4)))
 
-    def test_engine_nested_Zipable(self):
+    def test_engine_nested_zipable(self):
+        """Tests the behaviour of the engine on nested Zipables.
+        """
         var1 = Z(Z(1, 2, 3), Z(4, 5, 6))
         var2 = Z(Z(7, 8, 9), Z(10, 11, 12))
         self.assertEqual(list(engine(var1, var2)),
                          Z(*zip([1, 2, 3, 4, 5, 6],
                                 [7, 8, 9, 10, 11, 12])))
 
-    def test_engine_nested_Zipable_3(self):
+    def test_engine_nested_zipable_3(self):
+        """Tests the behaviour of the engine on 3 nested Zipables.
+        """
         var1 = Z(Z(1, 2, 3), Z(4, 5, 6))
         var2 = Z(Z(7, 8, 9), Z(10, 11, 12))
         var3 = Z(Z(13, 14, 15), Z(16, 17, 18))
@@ -35,7 +45,11 @@ class TestEngineZipable(unittest.TestCase):
 
 
 class TestEngineProductable(unittest.TestCase):
-    def test_engine_Productable_Productable(self):
+    """Test behaviour of the engine with Productables.
+    """
+    def test_engine_productable_productable(self):
+        """Tests the behaviour of the engine on non nested Productables.
+        """
         var1 = P(1, 2, 3)
         var2 = P(4, 5, 6)
         var3 = P(7, 8, 9)
@@ -43,14 +57,18 @@ class TestEngineProductable(unittest.TestCase):
         self.assertEqual(list(engine(var1, var2, var3, var4)),
                          list(grouper(flatten(var1 + var2 + var3 + var4), 4)))
 
-    def test_engine_nested_Productable(self):
+    def test_engine_nested_productable(self):
+        """Tests the behaviour of the engine on nested Productables.
+        """
         var1 = P(P(1, 2, 3), P(4, 5, 6))
         var2 = P(P(7, 8, 9), P(10, 11, 12))
         self.assertEqual(set(list(engine(var1, var2))),
                          set(list(product([1, 2, 3, 4, 5, 6],
                                           [7, 8, 9, 10, 11, 12]))))
 
-    def test_engine_nested_Productable_3(self):
+    def test_engine_nested_productable_3(self):
+        """Tests the behaviour of the engine on 3 nested Productables.
+        """
         var1 = P(P(1, 2, 3), P(4, 5, 6))
         var2 = P(P(7, 8, 9), P(10, 11, 12))
         var3 = P(P(13, 14, 15), P(16, 17, 18))
@@ -59,8 +77,14 @@ class TestEngineProductable(unittest.TestCase):
                       [13, 14, 15, 16, 17, 18])
         self.assertEqual(set(list(engine(var1, var2, var3))), set(list(res)))
 
+
 class TestEngineMixing(unittest.TestCase):
+    """Test the behaviour of the engine with mixtures of Zipables & Productables.
+    """
     def test_engine_mixing(self):
+        """Tests the behaviour of the engine on a mixture of Zipables and
+        Productables.
+        """
         var1 = Z(1, 2)
         var2 = Z(3, 4)
         var3 = P(5, 6)
@@ -68,6 +92,9 @@ class TestEngineMixing(unittest.TestCase):
         self.assertEqual(list(engine(var1, var2, var3)), res)
 
     def test_engine_mixing_nested(self):
+        """Tests the behaviour of the engine on a mixture of nested Zipables
+        and Productables.
+        """
         var1 = P(Z(1, 2), P(3, 4))
         var2 = P(Z(5, 6), P(7, 8))
         var3 = P(P(9, 10), P(11, 12))
@@ -129,11 +156,17 @@ class TestEngineMixing(unittest.TestCase):
                (4, 8, 12)]
         self.assertEqual(list(engine(var1, var2, var3)), res)
 
+
 class TestEngineUtils(unittest.TestCase):
+    """Test the behaviour of the helper functions.
+    """
     def test_flatten(self):
+        """Tests the behaviour of helper flatten."""
         inp = ((1, 2), (3, (4, 5)))
         self.assertEqual(list(flatten(inp)), [1, 2, 3, 4, 5])
 
     def test_grouper(self):
+        """Tests the behaviour of helper grouper."""
         inp = [1, 2, 3, 4, 5, 6, 7, 8]
-        self.assertEqual(list(grouper(inp, 2)), [(1, 2), (3, 4), (5, 6), (7, 8)])
+        self.assertEqual(list(grouper(inp, 2)),
+                         [(1, 2), (3, 4), (5, 6), (7, 8)])

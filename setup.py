@@ -7,19 +7,19 @@ The scan_engine setup script.
 from setuptools import setup
 
 with open('requirements.txt') as fobj:
-    requirements = [l.strip() for l in fobj.readlines()]
+    REQUIREMENTS = [l.strip() for l in fobj.readlines()]
 
 try:
     with open("README.md") as fh:
-        long_description = fh.read()
+        LONG_DESCRIPTION = fh.read()
 except UnicodeDecodeError:
-    long_description = "scan_engine, parameter scan creator and engine."
+    LONG_DESCRIPTION = "scan_engine, parameter scan creator and engine."
 
 setup(
     name='scan_engine',
     url='',
     description='',
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     author='Loic Coyle',
     author_email='loic.thomas.coyle@cern.ch',
     packages=['scan_engine'],
@@ -31,7 +31,7 @@ setup(
     #     'write_to': 'scan_engine/version.txt',
     #     'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
     # },
-    install_requires=requirements,
+    install_requires=REQUIREMENTS,
     python_requires='>=3.6',
     classifiers=[
         'Intended Audience :: Developers',
