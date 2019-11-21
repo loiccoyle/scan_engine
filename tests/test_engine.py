@@ -122,3 +122,12 @@ class testEngineMixing(unittest.TestCase):
                 (4, 8, 11),
                 (4, 8, 12)]
         self.assertEqual(list(engine(var1, var2, var3)), res)
+
+class TestEngineUtils(unittest.TestCase):
+    def test_flatten(self):
+        inp = ((1, 2), (3, (4, 5)))
+        self.assertEqual(list(flatten(inp)), [1, 2, 3, 4, 5])
+
+    def test_grouper(self):
+        inp = [1, 2, 3, 4, 5, 6, 7, 8]
+        self.assertEqual(list(grouper(inp, 2)), [(1, 2), (3, 4), (5, 6), (7, 8)])
