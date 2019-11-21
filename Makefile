@@ -38,6 +38,9 @@ lint:
 dependencies:
 	pip install -Ur requirements.txt
 
+notebooks:
+	jupyter nbconvert --to notebook --inplace --execute notebooks/tutorial.ipynb
+
 .PHONY: yapf
 yapf:
 	yapf -i -r $(PKGNAME)
