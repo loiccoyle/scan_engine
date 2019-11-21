@@ -4,7 +4,7 @@ from scan_engine import Productable as P
 from scan_engine import Zipable as Z
 
 
-class testZipable(unittest.TestCase):
+class TestZipable(unittest.TestCase):
     def test_Zipable_Zipable(self):
         '''Behaviour when Zipable conbines another Zipable.
         '''
@@ -40,7 +40,7 @@ class testZipable(unittest.TestCase):
         self.assertEqual(var1 + var2, Z((1, var2), (2, var2), (3, var2)))
 
 
-class testProductable(unittest.TestCase):
+class TestProductable(unittest.TestCase):
     def test_Productable_Productable(self):
         '''Behaviour when Productable conbines another Productable.
         '''
@@ -75,7 +75,7 @@ class testProductable(unittest.TestCase):
         var2 = [4, 5]
         self.assertEqual(var1 + var2, P((1, var2), (2, var2), (3, var2)))
 
-class testMixing(unittest.TestCase):
+class TestMixing(unittest.TestCase):
     def test_mixing(self):
         '''Behaviour when combining Productable and Zipable.
         '''
