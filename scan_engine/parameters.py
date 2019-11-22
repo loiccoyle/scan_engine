@@ -10,7 +10,7 @@ class Parameter(list):
         """Parameter base class, mainly used for type identification.
 
         Args:
-            *args: elements to be contained in this Paramter instance.
+            *args: elements to be contained in this Parameter instance.
         """
         super().__init__(args)
 

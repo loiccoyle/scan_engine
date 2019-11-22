@@ -9,16 +9,13 @@ Classes:
 
     engine: a function to expand nested operations.
 '''
-
-from pkg_resources import get_distribution, DistributionNotFound
+try:
+    from pkg_resources import get_distribution, DistributionNotFound
+    __version__ = get_distribution(__name__).version
+except (ImportError, DistributionNotFound):
+    __version__ = 'unknown'
 
 from .parameters import Productable, Zipable
 from .engine import engine
-
-try:
-    __version__ = get_distribution(__name__).version
-except DistributionNotFound:
-    # package is not installed
-    __version__ = 'unkown'
 
 __all__ = ['Productable', 'Zipable', 'engine']
