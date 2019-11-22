@@ -1,9 +1,10 @@
 '''Contains the engine function and other helper functions.
 '''
 from itertools import zip_longest
-from collections.abc import Iterable
 
 from .parameters import Parameter
+from .parameters import Productable
+from .parameters import CombinationOutput
 
 
 def expand(layer):
@@ -40,6 +41,8 @@ def engine(*iterators):
     Yields:
         Iterable: containing the expanded paremeters.
     '''
+    # pylint: disable=unidiomatic-typecheck
+    iterators = [Productable(*i) if type(i) is list else i for i in iterators]
     group = len(iterators)
     iterators = sum(iterators)
 
@@ -54,13 +57,13 @@ def flatten(iterable):
     '''Flattens an iterable.
 
     Args:
-        iterable (iterable): nested iterable to be falttened.
+        iterable (iterable): nested iterable to be flattened.
 
     Yields:
         element of iterable: element of the flattened iterable.
     '''
     for i in iterable:
-        if isinstance(i, Iterable) and not isinstance(i, (str, bytes)):
+        if isinstance(i, (CombinationOutput, Parameter)):
             yield from flatten(i)
         else:
             yield i

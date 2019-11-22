@@ -8,6 +8,50 @@ from scan_engine import engine
 
 from scan_engine.engine import flatten
 from scan_engine.engine import grouper
+from scan_engine.engine import expand
+
+
+class TestEngineDefaults(unittest.TestCase):
+    """Test behaviour of the engine with lists and tuples.
+    """
+    def test_engine_lists(self):
+        """Tests the behviour of the engine with standard lists. Should be cast
+        to Productables.
+        """
+        var1 = [1, 2]
+        var2 = [3, 4]
+        self.assertEqual(list(engine(var1, var2)),
+                         [(1, 3), (1, 4), (2, 3), (2, 4)])
+
+    def test_engine_tuples(self):
+        """Tests the behviour of the engine with standard tuples. Should be left as is.
+        """
+        var1 = [1, 2]
+        var2 = (3, 4)
+        self.assertEqual(list(engine(var1, var2)), [(1, (3, 4)), (2, (3, 4))])
+
+    def test_engine_tuples_mixing(self):
+        """Tests the behviour of the engine with standard standard tuples
+        alongside Zipables and Productables.
+        """
+        var1 = P(Z(1, 2), P(3, 4))
+        var2 = P(Z(5, 6), P(7, 8))
+        var3 = ('weirdo!', 5)
+        res = [(1, 5, ('weirdo!', 5)),
+               (2, 6, ('weirdo!', 5)),
+               (1, 7, ('weirdo!', 5)),
+               (1, 8, ('weirdo!', 5)),
+               (2, 7, ('weirdo!', 5)),
+               (2, 8, ('weirdo!', 5)),
+               (3, 5, ('weirdo!', 5)),
+               (3, 6, ('weirdo!', 5)),
+               (4, 5, ('weirdo!', 5)),
+               (4, 6, ('weirdo!', 5)),
+               (3, 7, ('weirdo!', 5)),
+               (3, 8, ('weirdo!', 5)),
+               (4, 7, ('weirdo!', 5)),
+               (4, 8, ('weirdo!', 5))]
+        self.assertEqual(list(engine(var1, var2, var3)), res)
 
 
 class TestEngineZipable(unittest.TestCase):
@@ -160,10 +204,20 @@ class TestEngineMixing(unittest.TestCase):
 class TestEngineUtils(unittest.TestCase):
     """Test the behaviour of the helper functions.
     """
+
+    def test_expand(self):
+        """Tests the behaviour of helper expand."""
+        var1 = P(Z(1, 2, 3), Z(4, 5, 6))
+        var2 = P(Z(7, 8, 9), Z(10, 11, 12))
+        expanded = list(expand((var1 + var2)[0]))
+        self.assertEqual(expanded, [Z((1, 7), (2, 8), (3, 9))])
+
     def test_flatten(self):
         """Tests the behaviour of helper flatten."""
-        inp = ((1, 2), (3, (4, 5)))
-        self.assertEqual(list(flatten(inp)), [1, 2, 3, 4, 5])
+        var1 = P(Z(1, 2, 3), Z(4, 5, 6))
+        var2 = P(Z(7, 8, 9), Z(10, 11, 12))
+        expanded = list(expand((var1 + var2)[0]))
+        self.assertEqual(list(flatten(expanded)), [1, 7, 2, 8, 3, 9])
 
     def test_grouper(self):
         """Tests the behaviour of helper grouper."""
