@@ -18,7 +18,7 @@ def expand(layer):
     '''
     layer_has_depth = isinstance(layer[0], tuple)
     if layer_has_depth:
-        depth_has_param = any(isinstance(i, Parameter) for i in layer[0])
+        depth_has_param = any(check_for_params(layer[0]))
     else:
         depth_has_param = False
     layer_has_param = any(isinstance(i, Parameter) for i in layer)
@@ -26,7 +26,7 @@ def expand(layer):
     if depth_has_param:
         yield from (i + layer[1] for i in expand(layer[0]))
     elif layer_has_param:
-        yield sum(layer)
+        yield layer[0] + layer[1]
     else:
         yield layer
 
@@ -36,7 +36,7 @@ def engine(*iterators):
 
     Args:
         *iterators (Zipable): Sums the provided Zipables and expands the
-        remaining combinations.
+                              remaining combinations.
 
     Yields:
         Iterable: containing the expanded paremeters.
@@ -51,6 +51,25 @@ def engine(*iterators):
         if group is not None:
             out = grouper(flatten(out), group)
         yield from out
+
+
+def check_for_params(iterable):
+    '''Recursivelly checks for any instances of Parameter in a nested iterable.
+
+    Args:
+        iterable (iterable): iterable for which to check for Parameter
+                             instances.
+
+    Yields:
+        bool: True for element is an Parameter instance, False otherwise.
+    '''
+    for i in iterable:
+        if isinstance(i, (tuple)):
+            yield from check_for_params(i)
+        elif isinstance(i, Parameter):
+            yield True
+        else:
+            yield False
 
 
 def flatten(iterable):

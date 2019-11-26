@@ -19,57 +19,69 @@ class Parameter(list):
         """
         super().__init__(args)
 
+    @staticmethod
+    def _combine(this, that):
+        pass
+
+    def __add__(self, other):
+        """Forward __radd__ to __add__.
+        """
+        if not other:
+            return self
+        return self._combine(self, other)
+
     def __radd__(self, other):
         """Forward __radd__ to __add__.
         """
-        return self.__add__(other)
+        if not other:
+            return self
+        return self._combine(other, self)
 
 
 class Productable(Parameter):
     """This class handles the parameters which should follow the product rule.
     """
-    def __add__(self, other):
+    @staticmethod
+    def _combine(this, that):
         """Defines the combination behaviour. Creates the itertools.product of
-        self and other.
+        this and that.
 
         Args:
-            other: the other object whith which to combine.
+            that: the object whith which to combine.
 
         Returns:
             Zipable: Zipable containing the result of the product.
         """
-        if not other:
-            return self
-        if not isinstance(other, Parameter):
-            other = _default_behaviour(other)
+        if not isinstance(that, Parameter):
+            that = _default_behaviour(that)
+        if not isinstance(this, Parameter):
+            this = _default_behaviour(this)
 
-        return Zipable(*(CombinationOutput(i) for i in product(self, other)))
-
-    def __repr__(self):
-        return f'P({super().__repr__()[1:-1]})'
+        return Zipable(*(CombinationOutput(i) for i in product(this, that)))
 
 
 class Zipable(Parameter):
     """This class handles the parameters which should follow the zip rule.
     """
-    def __add__(self, other):
-        """Defines the combination behaviour. Creates the zip of self and other.
+    @staticmethod
+    def _combine(this, that):
+        """Defines the combination behaviour. Creates the zip of this and that.
 
         Args:
-            other: the other object whith which to combine.
+            that: the object whith which to combine.
 
         Returns:
             Zipable: Zipable containing the result of the zip.
         """
-        if not other:
-            return self
-        if not isinstance(other, (Productable, Zipable)):
-            other = _default_behaviour(other)
+        if not isinstance(that, (Productable, Zipable)):
+            that = _default_behaviour(that)
+        if not isinstance(this, (Productable, Zipable)):
+            this = _default_behaviour(this)
 
-        if isinstance(other, Productable):
-            return Zipable(*(CombinationOutput(i) for i in product(self, other)))
+        if isinstance(that, Productable):
+            return Zipable(*(CombinationOutput(i) for i in product(this, that)))
 
-        return Zipable(*(CombinationOutput(i) for i in zip(self, other)))
+        return Zipable(*(CombinationOutput(i) for i in zip(this, that)))
 
     def __repr__(self):
         return f'Z({super().__repr__()[1:-1]})'
