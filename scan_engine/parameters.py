@@ -88,4 +88,8 @@ class Zipable(Parameter):
 
 
 def _default_behaviour(other):
-    return Productable(other)
+    if isinstance(other, list):
+        out = Productable(*other)
+    else:
+        out = Productable(other)
+    return out

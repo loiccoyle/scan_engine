@@ -40,7 +40,9 @@ class TestZipable(unittest.TestCase):
 
         var1 = Z(1, 2, 3)
         var2 = [4, 5]
-        self.assertEqual(var1 + var2, Z((1, var2), (2, var2), (3, var2)))
+        self.assertEqual(var1 + var2, P((1, 4), (1, 5),
+                                        (2, 4), (2, 5),
+                                        (3, 4), (3, 5)))
 
 
 class TestProductable(unittest.TestCase):
@@ -77,7 +79,9 @@ class TestProductable(unittest.TestCase):
 
         var1 = P(1, 2, 3)
         var2 = [4, 5]
-        self.assertEqual(var1 + var2, P((1, var2), (2, var2), (3, var2)))
+        self.assertEqual(var1 + var2, P((1, 4), (1, 5),
+                                        (2, 4), (2, 5),
+                                        (3, 4), (3, 5)))
 
 
 class TestMixing(unittest.TestCase):
