@@ -66,10 +66,8 @@ def check_for_params(iterable):
     for i in iterable:
         if isinstance(i, (tuple)):
             yield from check_for_params(i)
-        elif isinstance(i, Parameter):
-            yield True
         else:
-            yield False
+            yield isinstance(i, Parameter)
 
 
 def flatten(iterable):
