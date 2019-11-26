@@ -9,6 +9,7 @@ from scan_engine import engine
 from scan_engine.engine import flatten
 from scan_engine.engine import grouper
 from scan_engine.engine import expand
+from scan_engine.engine import check_for_params
 
 
 class TestEngineDefaults(unittest.TestCase):
@@ -200,6 +201,72 @@ class TestEngineMixing(unittest.TestCase):
                (4, 8, 12)]
         self.assertEqual(list(engine(var1, var2, var3)), res)
 
+    def test_egine_mixing_nested_2(self):
+        """Tests the behaviour of the engine on a mixture of nested Zipables
+        and Productables.
+        """
+        var1 = Z(2, 3)
+        var2 = Z(2, 3)
+        var3 = Z(P(10, 11), P(12, 13))
+        var4 = P(20, 21)
+        var5 = P(22, 23)
+        expected = [(2, 2, 10, 20, 22),
+                    (2, 2, 11, 20, 22),
+                    (2, 2, 10, 20, 23),
+                    (2, 2, 11, 20, 23),
+                    (2, 2, 10, 21, 22),
+                    (2, 2, 11, 21, 22),
+                    (2, 2, 10, 21, 23),
+                    (2, 2, 11, 21, 23),
+                    (3, 3, 12, 20, 22),
+                    (3, 3, 13, 20, 22),
+                    (3, 3, 12, 20, 23),
+                    (3, 3, 13, 20, 23),
+                    (3, 3, 12, 21, 22),
+                    (3, 3, 13, 21, 22),
+                    (3, 3, 12, 21, 23),
+                    (3, 3, 13, 21, 23)]
+        self.assertEqual(list(engine(var1, var2, var3, var4, var5)),
+                         expected)
+
+    def test_egine_mixing_nested_3(self):
+        """Tests the behaviour of the engine on a mixture of nested Zipables
+        and Productables.
+        """
+        var1 = Z(1, 2, 3)
+        var2 = Z(1, 2, 3)
+        var3 = P(10, 11, 12)
+        var4 = P(13, 14, 15)
+        expected = [(1, 1, 10, 13),
+                    (1, 1, 10, 14),
+                    (1, 1, 10, 15),
+                    (1, 1, 11, 13),
+                    (1, 1, 11, 14),
+                    (1, 1, 11, 15),
+                    (1, 1, 12, 13),
+                    (1, 1, 12, 14),
+                    (1, 1, 12, 15),
+                    (2, 2, 10, 13),
+                    (2, 2, 10, 14),
+                    (2, 2, 10, 15),
+                    (2, 2, 11, 13),
+                    (2, 2, 11, 14),
+                    (2, 2, 11, 15),
+                    (2, 2, 12, 13),
+                    (2, 2, 12, 14),
+                    (2, 2, 12, 15),
+                    (3, 3, 10, 13),
+                    (3, 3, 10, 14),
+                    (3, 3, 10, 15),
+                    (3, 3, 11, 13),
+                    (3, 3, 11, 14),
+                    (3, 3, 11, 15),
+                    (3, 3, 12, 13),
+                    (3, 3, 12, 14),
+                    (3, 3, 12, 15)]
+        self.assertEqual(list(engine(var1, var2, var3, var4)),
+                         expected)
+
 
 class TestEngineUtils(unittest.TestCase):
     """Test the behaviour of the helper functions.
@@ -224,3 +291,8 @@ class TestEngineUtils(unittest.TestCase):
         inp = [1, 2, 3, 4, 5, 6, 7, 8]
         self.assertEqual(list(grouper(inp, 2)),
                          [(1, 2), (3, 4), (5, 6), (7, 8)])
+
+    def test_check_for_params(self):
+        """Tests the nested param check helper."""
+        inp = ((((Z(1), 0), P(1)), 0), 0)
+        self.assertEqual(sum(check_for_params(inp)), 2)
