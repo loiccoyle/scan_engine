@@ -6,9 +6,6 @@ The scan_engine setup script.
 """
 from setuptools import setup
 
-with open('requirements.txt') as fobj:
-    REQUIREMENTS = [l.strip() for l in fobj.readlines()]
-
 with open("README.md") as fh:
     LONG_DESCRIPTION = fh.read()
 
