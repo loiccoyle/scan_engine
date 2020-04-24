@@ -21,7 +21,7 @@ setup(
     author_email='loic.thomas.coyle@cern.ch',
     packages=['scan_engine'],
     platforms='any',
-    install_requires=REQUIREMENTS,
+    install_requires=[],
     python_requires='>=3.6',
     classifiers=[
         'Intended Audience :: Developers',
