@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "Parameter scan engine"
 authors = ["Loic Coyle <loic.coyle@hotmail.fr>"]
 license = "MIT"
+repository = "https://github.com/loiccoyle/scan_engine"
+readme = "README.md"
+keywords = ["parameter-scan", "scan", "parameter", "combination"]
 
 [tool.poetry.dependencies]
 python = "^3.6"

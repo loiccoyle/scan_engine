@@ -1,4 +1,4 @@
-'''Contains the engine function and other helper functions.
+'''Contains the combine function and other helper functions.
 '''
 from itertools import zip_longest
 

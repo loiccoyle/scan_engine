@@ -1,4 +1,4 @@
-'''Contains the two parameter types, Zipable and Productable.
+'''Contains the two combination types, Zipable and Productable.
 '''
 from itertools import product
 
@@ -24,8 +24,6 @@ class Combination(list):
         pass
 
     def __add__(self, other):
-        """Forward __radd__ to __add__.
-        """
         if not other:
             return self
         return self._combine(self, other)
