@@ -7,15 +7,11 @@ Classes:
     Zipable: handles the parameters which should obey the simultaneous
     iteration, i.e. zip.
 
-    engine: a function to expand nested operations.
+    combine: a function to expand nested combinations.
 '''
-try:
-    from pkg_resources import get_distribution, DistributionNotFound
-    __version__ = get_distribution(__name__).version
-except (ImportError, DistributionNotFound):
-    __version__ = 'unknown'
+from .combinations import Productable, Zipable
+from .combine import combine
 
-from .parameters import Productable, Zipable
-from .engine import engine
-
-__all__ = ['Productable', 'Zipable', 'engine']
+__all__ = ['Productable', 'Zipable', 'combine']
+__author__ = 'Loic Coyle <loic.coyle@hotmail.fr>'
+__version__ = '0.1.0'

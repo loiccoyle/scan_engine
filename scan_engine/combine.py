@@ -2,9 +2,9 @@
 '''
 from itertools import zip_longest
 
-from .parameters import Parameter
-from .parameters import Productable
-from .parameters import CombinationOutput
+from .combinations import Combination
+from .combinations import Productable
+from .combinations import CombinationOutput
 
 
 def expand(layer):
@@ -21,7 +21,7 @@ def expand(layer):
         depth_has_param = any(check_for_params(layer[0]))
     else:
         depth_has_param = False
-    layer_has_param = any(isinstance(i, Parameter) for i in layer)
+    layer_has_param = any(isinstance(i, Combination) for i in layer)
 
     if depth_has_param:
         yield from (i + layer[1] for i in expand(layer[0]))
@@ -31,12 +31,12 @@ def expand(layer):
         yield layer
 
 
-def engine(*iterators):
-    '''Expansion engine, runs the expansion and cleans up the output.
+def combine(*iterators):
+    '''Combination engine, runs the expansion and cleans up the output.
 
     Args:
         *iterators (Zipable): Sums the provided Zipables and expands the
-                              remaining combinations.
+            remaining combinations.
 
     Yields:
         Iterable: containing the expanded paremeters.
@@ -54,20 +54,20 @@ def engine(*iterators):
 
 
 def check_for_params(iterable):
-    '''Recursivelly checks for any instances of Parameter in a nested iterable.
+    '''Recursivelly checks for any instances of Combination in a nested iterable.
 
     Args:
-        iterable (iterable): iterable for which to check for Parameter
-                             instances.
+        iterable (iterable): iterable for which to check for Combination
+            instances.
 
     Yields:
-        bool: True for element is an Parameter instance, False otherwise.
+        bool: True for element is an Combination instance, False otherwise.
     '''
     for i in iterable:
         if isinstance(i, (tuple)):
             yield from check_for_params(i)
         else:
-            yield isinstance(i, Parameter)
+            yield isinstance(i, Combination)
 
 
 def flatten(iterable):
@@ -80,7 +80,7 @@ def flatten(iterable):
         element of iterable: element of the flattened iterable.
     '''
     for i in iterable:
-        if isinstance(i, (CombinationOutput, Parameter)):
+        if isinstance(i, (CombinationOutput, Combination)):
             yield from flatten(i)
         else:
             yield i

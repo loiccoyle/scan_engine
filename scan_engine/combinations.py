@@ -8,14 +8,14 @@ class CombinationOutput(tuple):
     '''
 
 
-class Parameter(list):
-    """Parameter base class.
+class Combination(list):
+    """Combination base class.
     """
     def __init__(self, *args):
-        """Parameter base class, mainly used for type identification.
+        """Combination base class, mainly used for type identification.
 
         Args:
-            *args: elements to be contained in this Parameter instance.
+            *args: elements to be contained in this Combination instance.
         """
         super().__init__(args)
 
@@ -38,7 +38,7 @@ class Parameter(list):
         return self._combine(other, self)
 
 
-class Productable(Parameter):
+class Productable(Combination):
     """This class handles the parameters which should follow the product rule.
     """
     @staticmethod
@@ -52,15 +52,15 @@ class Productable(Parameter):
         Returns:
             Zipable: Zipable containing the result of the product.
         """
-        if not isinstance(that, Parameter):
+        if not isinstance(that, Combination):
             that = _default_behaviour(that)
-        if not isinstance(this, Parameter):
+        if not isinstance(this, Combination):
             this = _default_behaviour(this)
 
         return Zipable(*(CombinationOutput(i) for i in product(this, that)))
 
 
-class Zipable(Parameter):
+class Zipable(Combination):
     """This class handles the parameters which should follow the zip rule.
     """
     @staticmethod
